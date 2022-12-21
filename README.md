@@ -1,6 +1,6 @@
 # sns-clj
 
-Embedded sns for clojure
+Embedded fake sns for clojure based on https://github.com/s12v/sns Just packaged to make it easy to use for mocking in clojure land
 
 ## Usage
 
