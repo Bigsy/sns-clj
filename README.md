@@ -31,13 +31,13 @@ Embedded sns for clojure
 
 (defn around-all
   [f]
-  (with-sns-fn "optional file path for custom.conf"
+  (with-sns-fn "optional file path for db.json"
                     f))
 
 (use-fixtures :once around-all)
 
 
 ; You can also wrap ad-hoc code in init/halt:
-(with-sns "optional file path for custom.conf"
+(with-sns "optional file path for db.json"
   do-something) 
   ```

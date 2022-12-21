@@ -14,4 +14,3 @@
                                   [com.cognitect.aws/endpoints "1.1.12.358"]
                                   [com.cognitect.aws/sns "825.2.1268.0"]
                                   [cheshire "5.11.0"]]}})
-
