@@ -46,24 +46,21 @@
 (defn- build-sns-command
   "Build a java command to start sns Local with the required
   options."
-  [conf-path]
-  (let [conf-path (when conf-path (str "-Dconfig.file=" conf-path))
-        jar-path (str (io/file sns-directory "sns.jar"))
-        default-conf (str "DB_PATH=" (.getPath (clojure.java.io/resource "default_db.json")))]
-    (if conf-path
-      (format "java %s -jar %s"  conf-path jar-path)
-      (format "java -jar %s"  jar-path))))
+  []
+  (let [jar-path (str (io/file sns-directory "sns.jar"))]
+    (format "java -jar %s"  jar-path)))
 
-(comment (sh/sh "java -jar sns.jar" :dir "/Users/hedworth/.clj-sns-local/")
-         (sh/sh "java" "-jar" "/Users/hedworth/.clj-sns-local/sns.jar" :env {"DB_PATH" "/Users/hedworth/workspace/clojure/sns-clj/resources/default_db.json"}))
 
 (defn start-sns
   "Start sns Local with the desired options."
   [config]
-  (let [sns (->> (build-sns-command config)
-                 (.exec (Runtime/getRuntime)))]
+  (let [sns (.exec (Runtime/getRuntime) (build-sns-command)
+                   (into-array String [(str "DB_PATH=" (if config
+                                                         config
+                                                         (.getPath (clojure.java.io/resource "default_db.json"))))]))]
     (log/info "Started sns Local")
     sns))
+
 
 (defn- download-sns
   "Download sns."

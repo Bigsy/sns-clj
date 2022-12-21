@@ -1,4 +1,4 @@
-(ns sns-clj.default-test
+(ns sns-clj.custom-test
   (:require [clojure.test :refer :all]
             [cognitect.aws.client.api :as aws]
             [cognitect.aws.credentials :as credentials]
@@ -8,7 +8,7 @@
 
 (defn around-all
   [f]
-  (sut/with-sns-fn f))
+  (sut/with-sns-fn (.getPath (clojure.java.io/resource "custom_db.json")) f))
 
 (use-fixtures :once around-all)
 
@@ -22,6 +22,6 @@
                                           :port     9911}}))
 
 (deftest can-wrap-around
-  (testing "using defaults"
-    (is (= {:Topics [{:TopicArn "arn:aws:sns:us-east-1:123456789012:test1"}]} (aws/invoke sns {:op :ListTopics})))))
+  (testing "using custom db file"
+    (is (= {:Topics [{:TopicArn "arn:aws:sns:us-east-1:123456789012:test2"}]} (aws/invoke sns {:op :ListTopics})))))
 
