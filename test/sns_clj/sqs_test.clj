@@ -61,7 +61,7 @@
 
     (is (= "wibble" (-> (aws/invoke sqs {:op      :ReceiveMessage
                                          :request {:QueueUrl        "http://localhost:9324/000000000000/test-topic"
-                                                   :WaitTimeSeconds 3}})
+                                                   :WaitTimeSeconds 10}})
                         :Messages
                         first
                         :Body

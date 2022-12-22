@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "timestamp": 1671710795110,
+  "timestamp": 1671712002155,
   "subscriptions": [{
+    "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:29d4a8cb-7a18-4aff-885d-7b714b5a139a",
+    "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
+    "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
+    "owner": "",
+    "protocol": "sqs"
+  }, {
+    "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:6a80cfc1-f34e-4ffb-a726-62f23586fe60",
+    "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
+    "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
+    "owner": "",
+    "protocol": "sqs"
+  }, {
     "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:02185ca4-8498-40fc-a344-814fdfd3ec94",
     "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
     "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
@@ -135,6 +147,18 @@
     "protocol": "sqs"
   }, {
     "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:77557bc8-a00f-47cc-b838-ee8ce9e2a7e2",
+    "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
+    "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
+    "owner": "",
+    "protocol": "sqs"
+  }, {
+    "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:67c9c578-d4ce-4593-ba52-71ab63ddc24d",
+    "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
+    "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
+    "owner": "",
+    "protocol": "sqs"
+  }, {
+    "arn": "arn:aws:sns:us-east-1:123456789012:test-topic:20628ed0-f9e7-433a-b1f2-eea8249b7c30",
     "topicArn": "arn:aws:sns:us-east-1:123456789012:test-topic",
     "endpoint": "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey=",
     "owner": "",
