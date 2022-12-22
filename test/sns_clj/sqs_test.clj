@@ -8,56 +8,55 @@
 
 (defn with-around-fns
   [around-fns f]
-  (time
-    (let [future-1 (future ((first around-fns) f))
-          future-2 (future ((second around-fns) f))]
-      [@future-1 @future-2])))
+  (let [futures (for [x around-fns]
+                  (future (x f)))]
+    (doall (map deref futures))))
 
 (defn with-all-deps [f]
-  (with-around-fns [ (partial sut/with-sns-fn (.getPath (clojure.java.io/resource "sqs_db.json")))
-                     sqs/with-elasticmq-fn ] f))
+  (with-around-fns [(partial sut/with-sns-fn (.getPath (clojure.java.io/resource "sqs_db.json")))
+                    sqs/with-elasticmq-fn] f))
 
 
 (use-fixtures :once with-all-deps)
 
 
 (def sns (aws/client {:api                  :sns
-                      :region "us-east-1"
+                      :region               "us-east-1"
                       :credentials-provider (credentials/basic-credentials-provider
                                               {:access-key-id     "ABC"
                                                :secret-access-key "XYZ"})
-                      :endpoint-override {:protocol :http
-                                          :hostname "localhost"
-                                          :port     9911}}))
+                      :endpoint-override    {:protocol :http
+                                             :hostname "localhost"
+                                             :port     9911}}))
 
 (def sqs (aws/client {:api                  :sqs
-                      :region "us-east-1"
+                      :region               "us-east-1"
                       :credentials-provider (credentials/basic-credentials-provider
                                               {:access-key-id     "ABC"
                                                :secret-access-key "XYZ"})
-                      :endpoint-override {:protocol :http
-                                          :hostname "localhost"
-                                          :port     9324}}))
+                      :endpoint-override    {:protocol :http
+                                             :hostname "localhost"
+                                             :port     9324}}))
 
 (deftest can-wrap-around
   (testing "using defaults"
-    (aws/invoke sqs {:op :CreateQueue
+    (aws/invoke sqs {:op      :CreateQueue
                      :request {:QueueName "test-topic"}})
-    #_(aws/invoke sqs {:op :SendMessage
-                        :request {:QueueUrl "http://localhost:9324/000000000000/test-topic"
-                                  :MessageBody "wibblesqs"}})
+    #_(aws/invoke sqs {:op      :SendMessage
+                       :request {:QueueUrl    "http://localhost:9324/000000000000/test-topic"
+                                 :MessageBody "wibblesqs"}})
     (aws/invoke sqs {:op :ListQueues})
 
-    (aws/invoke sns {:op :CreateTopic
+    (aws/invoke sns {:op      :CreateTopic
                      :request {:Name "test-topic"}})
-    (aws/invoke sns {:op :Subscribe
+    (aws/invoke sns {:op      :Subscribe
                      :request {:Protocol "sqs"
                                :TopicArn "arn:aws:sns:us-east-1:123456789012:test-topic"
                                :Endpoint "aws-sqs://test-topic?amazonSQSEndpoint=http://localhost:9324&accessKey=&secretKey="}})
 
     (aws/invoke sns {:op :ListSubscriptions})
-    (aws/invoke sns {:op :Publish
-                     :request {:Message "wibble"
+    (aws/invoke sns {:op      :Publish
+                     :request {:Message  "wibble"
                                :TopicArn "arn:aws:sns:us-east-1:123456789012:test-topic"}})
 
     (is (= "wibble" (-> (aws/invoke sqs {:op      :ReceiveMessage
