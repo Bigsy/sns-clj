@@ -8,11 +8,10 @@
 
 (defn with-around-fns
   [around-fns f]
-  (cond
-    (empty? around-fns) (f)
-    (= 1 (count around-fns)) ((first around-fns) f)
-    :else (with-around-fns (butlast around-fns)
-                           (fn [] ((last around-fns) f)))))
+  (time
+    (let [future-1 (future ((first around-fns) f))
+          future-2 (future ((second around-fns) f))]
+      [@future-1 @future-2])))
 
 (defn with-all-deps [f]
   (with-around-fns [ (partial sut/with-sns-fn (.getPath (clojure.java.io/resource "sqs_db.json")))
